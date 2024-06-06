@@ -1,7 +1,7 @@
 'use client';
 import { cn } from '@/utils/cn';
 import React, { FC, InputHTMLAttributes, useState, ChangeEvent } from 'react';
-import TextInput from '../ui/text-input';
+import TextInput from '../../ui/text-input';
 
 interface EmailInputTypes
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {

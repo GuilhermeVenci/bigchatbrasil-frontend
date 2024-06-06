@@ -1,9 +1,6 @@
 import NextLink from 'next/link';
 import { Metadata } from 'next';
-import AuthActions from '../actions';
-import PasswordInput from '@/components/ui/password-input';
-import TextInput from '@/components/ui/text-input';
-import Button from '@/components/ui/button';
+import LoginForm from '@/components/forms/login-form';
 
 export const metadata: Metadata = {
   title: 'Acesse sua conta',
@@ -18,27 +15,7 @@ const LoginPage = () => {
         Selecione o método de login que preferir
       </p>
 
-      <form action={AuthActions.signIn} className="mt-6 flex flex-col gap-y-5">
-        <TextInput
-          label="Email"
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          required
-        />
-
-        <PasswordInput id="password" name="password" label="Senha" />
-
-        <div className="flex items-center justify-center">
-          <NextLink href="/forgot-password" passHref legacyBehavior>
-            <a className="text-sm text-blue-600 hover:text-blue-500">
-              Esqueceu a senha?
-            </a>
-          </NextLink>
-        </div>
-        <Button>Entrar</Button>
-      </form>
+      <LoginForm />
 
       {/* <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import PasswordInput from '../ui/password-input';
-import TextInput from '../ui/text-input';
+import PasswordInput from './password-input';
+import TextInput from '../../ui/text-input';
 import { cn } from '@/utils/cn';
 
 const PasswordConfirmInput = ({ className }: { className?: string }) => {

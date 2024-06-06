@@ -1,12 +1,10 @@
 import { cn } from '@/utils/cn';
 import React, { FC, InputHTMLAttributes } from 'react';
 
-interface TextInputTypes
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface TextInputTypes extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   id: string;
   name: string;
-  type?: 'text' | 'password' | 'email' | 'number';
   inputClassName?: string;
   labelClassName?: string;
   className?: string;

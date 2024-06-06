@@ -1,11 +1,6 @@
 import NextLink from 'next/link';
 import { Metadata } from 'next';
-import AuthActions from '../actions';
-import TextInput from '@/components/ui/text-input';
-import PasswordInput from '@/components/ui/password-input';
-import PasswordConfirmInput from '@/components/custom/password-confirm-input';
-import EmailInput from '@/components/custom/email-input';
-import Button from '@/components/ui/button';
+import SignUpForm from '@/components/forms/signup-form';
 
 export const metadata: Metadata = {
   title: 'Cadastre-se',
@@ -20,11 +15,7 @@ const SignUpPage = () => {
         Digite seu melhor email e uma senha segura
       </p>
 
-      <form action={AuthActions.signUp} className="mt-6 flex flex-col gap-y-5">
-        <EmailInput label="Email" id="email" name="email" required />
-        <PasswordConfirmInput className="-mt-4" />
-        <Button>Cadastrar</Button>
-      </form>
+      <SignUpForm />
 
       <div className="flex items-center justify-center mt-6">
         <p className="text-sm text-neutral-600">
