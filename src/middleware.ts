@@ -18,6 +18,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Recupera o token do cookie
+  const token = request.cookies.get('token')?.value;
+
+  // Se não houver token, redireciona para o login
+  if (!token) {
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
+  }
+
   return NextResponse.next();
 }
 

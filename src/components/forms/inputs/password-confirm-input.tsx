@@ -68,8 +68,8 @@ const PasswordConfirmInput = ({ className }: { className?: string }) => {
       <div className="relative pb-[17px]">
         <TextInput
           label="Confirmação de senha"
-          id="confirmPassword"
-          name="confirmPassword"
+          id="passwordConfirm"
+          name="passwordConfirm"
           type={show ? 'text' : 'password'}
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}

@@ -1,4 +1,5 @@
 'use client';
+import logoutClient from '@/app/(auth)/client-actions';
 import { cn } from '@/utils/cn';
 import {
   Popover,
@@ -148,6 +149,7 @@ export default function Header() {
                                 focus ? 'bg-neutral-100' : '',
                                 'block px-4 py-2 text-sm text-neutral-700'
                               )}
+                              onClick={logoutClient}
                             >
                               Sign out
                             </a>
