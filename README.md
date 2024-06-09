@@ -80,8 +80,10 @@ bigchatbrasil-frontend/
 │   ├── components/
 │   │   ├── custom/
 │   │   ├── forms/
+│   │   │   ├── client-form.tsx
 │   │   │   ├── login-form.tsx
-│   │   │   ├── signp-form.tsx
+│   │   │   ├── send-message-form.tsx
+│   │   │   ├── signup-form.tsx
 │   │   │   ├── inputs/
 │   │   ├── ui/
 │   ├── context/
