@@ -1,5 +1,8 @@
+'use client';
 import React, { ButtonHTMLAttributes, FC } from 'react';
 import { cn } from '@/utils/cn';
+import { useFormStatus } from 'react-dom';
+import { ThreeDotsWave } from '../custom/tree-dots-wave';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -7,15 +10,20 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: FC<ButtonProps> = ({ children, className, ...props }) => {
+  const { pending } = useFormStatus();
   return (
     <button
+      disabled={pending}
       className={cn(
-        'w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 mt-2',
+        ':h-10 w-full max-w-xs py-2 rounded-md',
+        'bg-blue-500 hover:bg-blue-600 mt-2',
+        'text-white text-base ',
+        pending ? 'bg-blue-600' : '',
         className
       )}
       {...props}
     >
-      {children}
+      {pending ? <ThreeDotsWave color="bg-white" /> : children}
     </button>
   );
 };

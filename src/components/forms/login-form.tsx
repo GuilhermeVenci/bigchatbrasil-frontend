@@ -18,7 +18,7 @@ const LoginForm = () => {
 
       <PasswordInput id="password" name="password" label="Senha" />
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center mt-1">
         <NextLink href="/forgot-password" passHref legacyBehavior>
           <a className="text-sm text-blue-600 hover:text-blue-500">
             Esqueceu a senha?

@@ -13,40 +13,41 @@ const signIn = async (formData: FormData) => {
   let accessToken;
   let userRole;
 
-  try {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+  const response = await fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-    if (!response.ok) {
-      return response.json().then((errorData) => {
-        throw new Error('Login failed. Error: ' + errorData.message);
-      });
-    }
-
-    const data = await response.json();
-    accessToken = data.access_token;
-    userRole = data.role;
-
-    if (!accessToken) {
-      throw new Error('Nenhum token de acesso recebido');
-    }
-
-    cookies().set('token', accessToken, {
-      maxAge: cookieMaxAge,
-      path: '/',
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      sameSite: 'strict',
-    });
-  } catch (error) {
-    console.error('Erro durante o cadastro:', error);
-    return console.error('Erro durante o cadastro:', error);
+  if (!response.ok) {
+    const errorData = await response.json();
+    return redirect(
+      `/login?error=${encodeURIComponent(
+        'Erro durante o login. Verifique o email e a senha.'
+      )}`
+    );
   }
+
+  const data = await response.json();
+  accessToken = data.access_token;
+  userRole = data.role;
+
+  if (!accessToken) {
+    return redirect(
+      `/login?error=${encodeURIComponent('Nenhum token de acesso recebido')}`
+    );
+  }
+
+  cookies().set('token', accessToken, {
+    maxAge: cookieMaxAge,
+    path: '/',
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+
   if (userRole === 'CLIENT') {
     return redirect('/messages');
   } else {
@@ -69,39 +70,40 @@ const signUp = async (formData: FormData) => {
   let accessToken;
   let userRole;
 
-  try {
-    const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+  const response = await fetch(`${API_URL}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error('Falha no registro. Erro: ' + errorData.message);
-    }
-
-    const data = await response.json();
-    accessToken = data.access_token;
-    userRole = data.role;
-
-    if (!accessToken) {
-      throw new Error('Nenhum token de acesso recebido');
-    }
-
-    cookies().set('token', accessToken, {
-      maxAge: cookieMaxAge,
-      path: '/',
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      sameSite: 'strict',
-    });
-  } catch (error) {
-    console.error('Erro durante o cadastro:', error);
-    return console.error('Erro durante o cadastro:', error);
+  if (!response.ok) {
+    const errorData = await response.json();
+    return redirect(
+      `/signup?error=${encodeURIComponent(
+        'Erro no cadastro. Verifique se o email já está cadastrado.'
+      )}`
+    );
   }
+
+  const data = await response.json();
+  accessToken = data.access_token;
+  userRole = data.role;
+
+  if (!accessToken) {
+    return redirect(
+      `/signup?error=${encodeURIComponent('Nenhum token de acesso recebido')}`
+    );
+  }
+
+  cookies().set('token', accessToken, {
+    maxAge: cookieMaxAge,
+    path: '/',
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'strict',
+  });
 
   if (userRole === 'CLIENT') {
     return redirect('/messages');

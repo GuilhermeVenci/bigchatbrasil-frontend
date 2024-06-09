@@ -1,7 +1,7 @@
 'use client';
-import { cn } from '@/utils/cn';
 import React, { FC, InputHTMLAttributes, useState, ChangeEvent } from 'react';
 import TextInput from '../../ui/text-input';
+import { cn } from '@/utils/cn';
 
 interface PhoneInputTypes
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
@@ -15,7 +15,7 @@ interface PhoneInputTypes
 
 const formatPhoneNumber = (value: string) => {
   if (!value) return value;
-  const phoneNumber = value.replace(/[^\d]/g, ''); // Remove all non-digit characters
+  const phoneNumber = value.replace(/[^\d]/g, '');
   const phoneNumberLength = phoneNumber.length;
 
   if (phoneNumberLength < 3) return phoneNumber;
@@ -36,26 +36,27 @@ const PhoneInput: FC<PhoneInputTypes> = ({
   labelClassName,
   className,
   onChange,
+  value,
   ...props
 }) => {
-  const [value, setValue] = useState('');
+  const [internalValue, setInternalValue] = useState(value || '');
   const [isValid, setIsValid] = useState(true);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const rawValue = event.target.value;
     const formattedValue = formatPhoneNumber(rawValue);
-    setValue(formattedValue);
+    setInternalValue(formattedValue);
 
-    const isValidPhone = /^\(\d{2}\) \d{5}-\d{4}$/.test(formattedValue); // Basic format validation
+    const isValidPhone = /^\(\d{2}\) \d{5}-\d{4}$/.test(formattedValue);
     setIsValid(isValidPhone);
 
     if (onChange) {
-      // Create a synthetic event with the formatted value
       const syntheticEvent = {
         ...event,
         target: {
           ...event.target,
-          value: formattedValue,
+          name,
+          value: rawValue.replace(/[^\d]/g, ''),
         },
       };
       onChange(syntheticEvent as ChangeEvent<HTMLInputElement>);
@@ -69,7 +70,7 @@ const PhoneInput: FC<PhoneInputTypes> = ({
         id={id}
         name={name}
         type="tel"
-        value={value}
+        value={internalValue}
         autoComplete="tel"
         className={cn(inputClassName, !isValid ? 'border-red-600' : '')}
         onChange={handleInputChange}

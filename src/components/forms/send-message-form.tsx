@@ -3,40 +3,57 @@ import { useState } from 'react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/button';
 import PhoneInput from './inputs/phone-input';
+import apiRequest from '@/utils/api';
 
 const removePhoneFormatting = (phone: string) => {
   return phone.replace(/[^\d]/g, '');
 };
 
-const SendMessageForm = () => {
+const SendMessageForm = ({
+  clientId,
+  onMessageSent,
+}: {
+  clientId: number;
+  onMessageSent: () => void;
+}) => {
   const [phone, setPhone] = useState('');
   const [isWhatsApp, setIsWhatsApp] = useState(false);
   const [text, setText] = useState('');
+  const [error, setError] = useState(false);
 
   const handleSendMessage = async () => {
+    setError(false);
     const phoneCharacters = removePhoneFormatting(phone);
+    const values = {
+      clientId,
+      phoneNumber: phoneCharacters,
+      isWhatsApp,
+      text,
+      sentAt: new Date().toISOString(),
+    };
 
-    if (isWhatsApp) {
-      console.log({ whatsapp: { phone: phoneCharacters, text } });
+    if (values.text && values.phoneNumber) {
+      await apiRequest('/messages/', 'POST', values);
     } else {
-      console.log({ phone: phoneCharacters, text });
+      setError(true);
     }
+    onMessageSent();
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-md">
+    <div className="container mx-auto max-sm:p-4 max-w-xl">
       <h1 className="text-2xl font-bold mb-6">Enviar Mensagem</h1>
-      <div className="flex flex-row justify-between items-center gap-x-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-x-4">
         <PhoneInput
           id="phoneNumber"
           name="phoneNumber"
           label="Número de Telefone"
           placeholder="Número de Telefone"
-          className="flex-1"
+          className="flex-1 max-sm:w-full"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <div className="flex flex-row gap-x-4 h-[42px] mt-auto mb-[18px]">
+        <div className="max-sm:w-full flex flex-row max-sm:justify-around sm:gap-x-4 h-[42px] mt-auto mb-[18px]">
           <label className="flex items-center font-semibold">
             <input
               type="radio"
@@ -65,9 +82,9 @@ const SendMessageForm = () => {
       <textarea
         id="message"
         placeholder="Texto da Mensagem"
-        rows={10}
+        rows={6}
         className={cn(
-          'mt-1 block w-full px-3 py-2 mb-4',
+          'mt-1 block w-full px-3 py-2',
           'border border-neutral-300 rounded-md shadow-sm',
           'placeholder-neutral-400 sm:text-sm text-neutral-950',
           'focus:outline-none focus:ring-blue-500 focus:border-blue-500'
@@ -75,7 +92,16 @@ const SendMessageForm = () => {
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <Button onClick={handleSendMessage}>Enviar</Button>
+      {error ? (
+        <span className="text-xs text-red-600">
+          Preencha todos os campos para enviar a mensagem
+        </span>
+      ) : (
+        <></>
+      )}
+      <Button onClick={handleSendMessage} className="mt-4">
+        Enviar
+      </Button>
     </div>
   );
 };

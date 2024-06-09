@@ -6,14 +6,25 @@ export const metadata: Metadata = {
   title: 'Cadastre-se',
 };
 
-const SignUpPage = () => {
+const SignUpPage = ({
+  searchParams,
+}: {
+  searchParams?: {
+    error?: string;
+  };
+}) => {
+  const error = searchParams?.error;
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-md shadow-md text-neutral-950">
+    <div className="max-w-sm sm:w-96 mx-auto mt-8 p-6 bg-white rounded-md text-neutral-950">
       <h1 className="text-2xl font-semibold text-center">Crie uma conta</h1>
 
       <p className="text-neutral-600 text-center mt-2">
         Digite seu melhor email e uma senha segura
       </p>
+
+      {error && (
+        <p className="text-red-500 text-center text-xs mt-4">{error}</p>
+      )}
 
       <SignUpForm />
 

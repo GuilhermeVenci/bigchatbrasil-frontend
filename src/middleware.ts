@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
+  const token = request.cookies.get('token')?.value;
 
   if (url.pathname === '/') {
     url.pathname = '/login';
@@ -14,16 +15,15 @@ export async function middleware(request: NextRequest) {
     publicPaths.some((publicPath) => url.pathname.startsWith(publicPath)) ||
     url.pathname.startsWith('/confirm');
 
-  if (isPublicPath) {
-    return NextResponse.next();
-  }
-
-  // Recupera o token do cookie
-  const token = request.cookies.get('token')?.value;
-
-  // Se não houver token, redireciona para o login
   if (!token) {
-    url.pathname = '/login';
+    if (isPublicPath) {
+      return NextResponse.next();
+    } else {
+      url.pathname = '/login';
+      return NextResponse.redirect(url);
+    }
+  } else if (isPublicPath) {
+    url.pathname = '/messages';
     return NextResponse.redirect(url);
   }
 

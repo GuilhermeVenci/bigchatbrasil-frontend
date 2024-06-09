@@ -4,7 +4,6 @@ const logoutClient = async () => {
   });
 
   if (response.ok) {
-    // Redirecionar para a página de login
     window.location.href = '/login';
   } else {
     console.error('Failed to logout');

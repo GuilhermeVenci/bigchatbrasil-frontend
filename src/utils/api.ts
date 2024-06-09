@@ -1,4 +1,3 @@
-// src/utils/api.ts
 const apiRequest = async (
   url: string,
   method: string = 'GET',
@@ -6,7 +5,7 @@ const apiRequest = async (
 ) => {
   const options: RequestInit = {
     method,
-    credentials: 'include', // Incluir cookies na requisição
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -21,19 +20,26 @@ const apiRequest = async (
     options
   );
 
-  console.log(
-    `Request to ${url} with method ${method} resulted in status ${response.status}`
-  );
-
   if (!response.ok) {
-    const errorText = await response.text(); // Capture o corpo da resposta em caso de erro
-    console.error(
-      `API request failed with status ${response.status}: ${errorText}`
-    );
-    throw new Error(`API request failed with status ${response.status}`);
+    const errorText = await response.text();
+    if (response.status === 401) {
+      console.log('Unautorized');
+    } else if (response.status === 500) {
+      console.log('Not found');
+    } else {
+      console.error(
+        `API request failed with status ${response.status}: ${errorText}`
+      );
+      console.error(`API request failed with status ${response.status}`);
+    }
   }
 
-  return response.json();
+  const responseText = await response.text();
+  if (!responseText) {
+    return null;
+  }
+
+  return JSON.parse(responseText);
 };
 
 export default apiRequest;
