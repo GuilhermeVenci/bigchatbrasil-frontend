@@ -8,6 +8,7 @@ import {
 } from 'react';
 import apiRequest from '@/utils/api';
 import { useUser } from '@/context/user-context';
+import { useClient } from './client-context';
 
 type Message = {
   id: number;
@@ -18,6 +19,7 @@ type Message = {
 type MessagesContextType = {
   messages: Message[];
   getMessages: () => void;
+  sendMessage: (values: any) => Promise<void>;
 };
 
 const MessagesContext = createContext<MessagesContextType | undefined>(
@@ -26,6 +28,7 @@ const MessagesContext = createContext<MessagesContextType | undefined>(
 
 export const MessagesProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
+  const { client, getClientData } = useClient();
   const [messages, setMessages] = useState<Message[]>([]);
 
   const getMessages = async () => {
@@ -39,12 +42,22 @@ export const MessagesProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const sendMessage = async (values: any) => {
+    try {
+      await apiRequest('/messages/', 'POST', values);
+      await getMessages();
+      await getClientData();
+    } catch (error) {
+      console.log('Failed to send message:', error);
+    }
+  };
+
   useEffect(() => {
     getMessages();
   }, [user]);
 
   return (
-    <MessagesContext.Provider value={{ messages, getMessages }}>
+    <MessagesContext.Provider value={{ messages, getMessages, sendMessage }}>
       {children}
     </MessagesContext.Provider>
   );

@@ -2,10 +2,11 @@
 import ClientForm from '@/components/forms/client-form';
 import { useUser } from '@/context/user-context';
 import { MessagesProvider } from '@/context/messages-context';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MessagesPage from './page';
 import apiRequest from '@/utils/api';
 import LoadingMessages from './loading';
+import { ClientProvider } from '@/context/client-context';
 
 type ClientType = {
   id: number;
@@ -15,7 +16,8 @@ type ClientType = {
 
 const MessagesLayout = () => {
   const { user } = useUser();
-  const [client, setClient] = useState<ClientType>();
+  const [client, setClient] = useState<ClientType | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verifyClient = async () => {
@@ -26,10 +28,17 @@ const MessagesLayout = () => {
           );
           if (clientResponse && clientResponse.id) {
             setClient(clientResponse);
+          } else {
+            setClient(null);
           }
         } catch (error) {
-          console.error('Failed to fetch client:', error);
+          console.error('Falha no carregamento:', error);
+          setClient(null);
+        } finally {
+          setLoading(false);
         }
+      } else {
+        setLoading(false);
       }
     };
 
@@ -41,17 +50,19 @@ const MessagesLayout = () => {
   };
 
   return (
-    <MessagesProvider>
-      <Suspense fallback={<LoadingMessages />}>
+    <ClientProvider>
+      <MessagesProvider>
         <div className="p-6 sm:p-12">
-          {client ? (
+          {loading ? (
+            <LoadingMessages />
+          ) : client ? (
             <MessagesPage clientId={client.id} />
           ) : (
             <ClientForm onClientCreated={handleClientCreated} />
           )}
         </div>
-      </Suspense>
-    </MessagesProvider>
+      </MessagesProvider>
+    </ClientProvider>
   );
 };
 

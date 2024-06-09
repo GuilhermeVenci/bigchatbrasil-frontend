@@ -3,23 +3,18 @@ import { useState } from 'react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/button';
 import PhoneInput from './inputs/phone-input';
-import apiRequest from '@/utils/api';
+import { useMessages } from '@/context/messages-context';
 
 const removePhoneFormatting = (phone: string) => {
   return phone.replace(/[^\d]/g, '');
 };
 
-const SendMessageForm = ({
-  clientId,
-  onMessageSent,
-}: {
-  clientId: number;
-  onMessageSent: () => void;
-}) => {
+const SendMessageForm = ({ clientId }: { clientId: number }) => {
   const [phone, setPhone] = useState('');
   const [isWhatsApp, setIsWhatsApp] = useState(false);
   const [text, setText] = useState('');
   const [error, setError] = useState(false);
+  const { sendMessage, getMessages } = useMessages();
 
   const handleSendMessage = async () => {
     setError(false);
@@ -33,15 +28,16 @@ const SendMessageForm = ({
     };
 
     if (values.text && values.phoneNumber) {
-      await apiRequest('/messages/', 'POST', values);
+      sendMessage(values);
+      setText('');
     } else {
       setError(true);
     }
-    onMessageSent();
+    getMessages();
   };
 
   return (
-    <div className="container mx-auto max-sm:p-4 max-w-xl">
+    <div className="container mx-auto max-w-xl">
       <h1 className="text-2xl font-bold mb-6">Enviar Mensagem</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-x-4">
         <PhoneInput
