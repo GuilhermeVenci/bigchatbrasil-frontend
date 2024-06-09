@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend do Projeto BCB – Big Chat Brasil
 
-## Getting Started
+## Descrição
 
-First, run the development server:
+Este projeto é o frontend do sistema BCB – Big Chat Brasil, um enviador de SMS e outras mensagens para clientes brasileiros. Ele foi desenvolvido utilizando Next.js com TailwindCSS. O sistema permite que os clientes enviem mensagens para seus usuários finais.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Funcionalidades
+
+- Login de clientes
+- Cadastro de clientes
+- Envio de SMS e mensagens via WhatsApp
+- Interface de usuário responsiva
+
+## Tecnologias Utilizadas
+
+- **Frontend**: Next.js 14
+- **Estilização**: TailwindCSS
+- **Componentes**: Headless UI e Framer Motion
+
+## Pré-requisitos
+
+- Node.js (v14 ou superior)
+
+## Instalação e Execução
+
+Siga os passos abaixo para configurar e executar o projeto.
+
+### 1. Clonar o repositório
+
+```
+git clone https://github.com/guilhermevenci/bigchatbrasil-frontend.git
+cd bigchatbrasil-frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configurar variáveis de ambiente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crie um arquivo .env.local na raiz do projeto com as seguintes variáveis:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+NEXT_PUBLIC_JWT_SECRET="app_secret"
+NEXT_PUBLIC_API_URL="http://localhost:3333"
+```
 
-## Learn More
+### 3. Instalar dependências
 
-To learn more about Next.js, take a look at the following resources:
+```
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Executar o projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+npm run dev
+```
 
-## Deploy on Vercel
+## Estrutura do Projeto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+bigchatbrasil-frontend/
+├── public/
+├── src/
+│   ├── app/
+│   │   ├── (auth)/
+│   │   │   ├── login/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── signup/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── actions.ts
+│   │   │   ├── client-actions.ts
+│   │   │   ├── layout.tsx
+│   │   ├── (workspace)/
+│   │   │   ├── dashboard/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── messages/
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── loading.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   ├── auth-guard.tsx
+│   │   │   ├── layout.tsx
+│   ├── components/
+│   │   ├── custom/
+│   │   ├── forms/
+│   │   │   ├── login-form.tsx
+│   │   │   ├── signp-form.tsx
+│   │   │   ├── inputs/
+│   │   ├── ui/
+│   ├── context/
+│   │   ├── messages-context.tsx
+│   │   ├── user-context.tsx
+│   ├── utils/
+│   │   ├── api.ts
+│   │   ├── cn.ts
+│   ├── middleware.ts
+├── .env.local
+├── next.config.js
+├── package.json
+├── README.md
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Boas Práticas
+
+- Autenticação em SSR
+- Componentes reutilizáveis e modulares
+- Estilização consistente com TailwindCSS
