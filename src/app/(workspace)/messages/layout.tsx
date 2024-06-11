@@ -26,6 +26,7 @@ const MessagesLayout = () => {
           const clientResponse: any = await apiRequest(
             '/clients/user/' + user?.id
           );
+          console.log(clientResponse);
           if (clientResponse && clientResponse.id) {
             setClient(clientResponse);
           } else {
@@ -37,8 +38,6 @@ const MessagesLayout = () => {
         } finally {
           setLoading(false);
         }
-      } else {
-        setLoading(false);
       }
     };
 
@@ -55,7 +54,7 @@ const MessagesLayout = () => {
         <div className="p-6 sm:p-12">
           {loading ? (
             <LoadingMessages />
-          ) : client ? (
+          ) : client !== null ? (
             <MessagesPage clientId={client.id} />
           ) : (
             <ClientForm onClientCreated={handleClientCreated} />
