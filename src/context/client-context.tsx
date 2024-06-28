@@ -5,6 +5,7 @@ import {
   useState,
   ReactNode,
   useEffect,
+  useCallback,
 } from 'react';
 import apiRequest from '@/utils/api';
 import { useUser } from '@/context/user-context';
@@ -16,6 +17,7 @@ type Client = {
   limit?: number;
   credits?: number;
   currentConsumption?: number;
+  current_consumption?: number;
   phone: string;
   name: string;
   cpf: string;
@@ -36,23 +38,25 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
   const [client, setClient] = useState<Client | null>(null);
   const [currentConsumption, setCurrentConsumption] = useState<number>(0);
 
-  const getClientData = async () => {
+  const getClientData = useCallback(async () => {
     if (user) {
       try {
-        const response = await apiRequest(`/clients/user/${user.id}`);
+        const response = await apiRequest(`/clients/native/user/${user.id}`);
         if (response) {
           setClient(response);
-          setCurrentConsumption(response.currentConsumption);
+          setCurrentConsumption(
+            response.currentConsumption || response.current_consumption
+          );
         }
-      } catch (error) {
-        console.error('Failed to fetch client:', error);
+      } catch (error: any) {
+        console.log('CLIENTE NÃO CADASTRADO.', error);
       }
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     getClientData();
-  }, [user]);
+  }, [user, getClientData]);
 
   return (
     <ClientContext.Provider

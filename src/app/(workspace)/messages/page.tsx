@@ -16,7 +16,7 @@ const MessagesPage = ({ clientId }: { clientId: number }) => {
   const balance = client
     ? planPre
       ? client.credits ?? 0
-      : client.currentConsumption ?? 0
+      : (client.currentConsumption || client.current_consumption) ?? 0
     : 0;
 
   return (

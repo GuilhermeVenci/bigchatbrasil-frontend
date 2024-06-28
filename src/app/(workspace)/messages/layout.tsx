@@ -32,7 +32,6 @@ const MessagesLayout = () => {
             setClient(null);
           }
         } catch (error) {
-          console.error('Falha no carregamento:', error);
           setClient(null);
         } finally {
           setLoading(false);
