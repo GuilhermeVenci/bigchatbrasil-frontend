@@ -15,7 +15,7 @@ const Button: FC<ButtonProps> = ({ children, className, ...props }) => {
     <button
       disabled={pending}
       className={cn(
-        'h-10 w-full max-w-md py-2 rounded-md',
+        'h-10 w-fit max-w-sm max-sm:w-full py-2 px-6 rounded-md',
         'bg-blue-500 hover:bg-blue-600 mt-2',
         'text-white text-base ',
         pending ? 'bg-blue-600' : '',

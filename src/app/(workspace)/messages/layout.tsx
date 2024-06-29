@@ -7,12 +7,7 @@ import MessagesPage from './page';
 import apiRequest from '@/utils/api';
 import LoadingMessages from './loading';
 import { ClientProvider } from '@/context/client-context';
-
-type ClientType = {
-  id: number;
-  name: string;
-  plan: string;
-};
+import { ClientType } from '@/types/client';
 
 const MessagesLayout = () => {
   const { user } = useUser();
@@ -24,7 +19,7 @@ const MessagesLayout = () => {
       if (user) {
         try {
           const clientResponse: any = await apiRequest(
-            '/clients/user/' + user?.id
+            '/clients/native/user/' + user?.id
           );
           if (clientResponse && clientResponse.id) {
             setClient(clientResponse);
@@ -55,7 +50,7 @@ const MessagesLayout = () => {
           {loading ? (
             <LoadingMessages />
           ) : client ? (
-            <MessagesPage clientId={client.id} />
+            <MessagesPage client={client} />
           ) : (
             <ClientForm onClientCreated={handleClientCreated} />
           )}

@@ -6,7 +6,6 @@ import TextInput from '../ui/text-input';
 import Button from '../ui/button';
 import PhoneInput from './inputs/phone-input';
 import SelectInput from '../ui/select-input';
-import { useRouter } from 'next/navigation';
 
 interface ClientFormProps {
   onClientCreated: (client: any) => void;
@@ -14,7 +13,6 @@ interface ClientFormProps {
 
 const ClientForm: React.FC<ClientFormProps> = ({ onClientCreated }) => {
   const { user } = useUser();
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     userId: '',
@@ -56,7 +54,7 @@ const ClientForm: React.FC<ClientFormProps> = ({ onClientCreated }) => {
 
     if (formData.userId) {
       try {
-        const response = await apiRequest('/clients', 'POST', formData);
+        const response = await apiRequest('/clients/native', 'POST', formData);
         onClientCreated(response);
       } catch (error) {
         setError('Failed to create client');

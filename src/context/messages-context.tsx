@@ -10,12 +10,7 @@ import {
 import apiRequest from '@/utils/api';
 import { useUser } from '@/context/user-context';
 import { useClient } from './client-context';
-
-type Message = {
-  id: number;
-  text: string;
-  isWhatsApp: boolean;
-};
+import { Message } from '@/types/messages';
 
 type MessagesContextType = {
   messages: Message[];

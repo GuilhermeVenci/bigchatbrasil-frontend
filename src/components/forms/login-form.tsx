@@ -25,7 +25,7 @@ const LoginForm = () => {
           </a>
         </NextLink>
       </div>
-      <Button>Entrar</Button>
+      <Button className="w-full">Entrar</Button>
     </form>
   );
 };

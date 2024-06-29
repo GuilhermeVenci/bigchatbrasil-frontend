@@ -8,7 +8,7 @@ const SignUpForm = () => {
     <form action={AuthActions.signUp} className="mt-6 flex flex-col gap-y-5">
       <EmailInput label="Email" id="email" name="email" required />
       <PasswordConfirmInput className="-mt-4" />
-      <Button>Cadastrar</Button>
+      <Button className="w-full">Cadastrar</Button>
     </form>
   );
 };

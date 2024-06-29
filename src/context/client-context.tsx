@@ -9,24 +9,10 @@ import {
 } from 'react';
 import apiRequest from '@/utils/api';
 import { useUser } from '@/context/user-context';
-
-type Client = {
-  id: number;
-  userId: number;
-  plan: string;
-  limit?: number;
-  credits?: number;
-  currentConsumption?: number;
-  current_consumption?: number;
-  phone: string;
-  name: string;
-  cpf: string;
-  cnpj: string;
-  companyName: string;
-};
+import { ClientType } from '@/types/client';
 
 type ClientContextType = {
-  client: Client | null;
+  client: ClientType | null;
   currentConsumption: number;
   getClientData: () => void;
 };
@@ -35,7 +21,7 @@ const ClientContext = createContext<ClientContextType | undefined>(undefined);
 
 export const ClientProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
-  const [client, setClient] = useState<Client | null>(null);
+  const [client, setClient] = useState<ClientType | null>(null);
   const [currentConsumption, setCurrentConsumption] = useState<number>(0);
 
   const getClientData = useCallback(async () => {
