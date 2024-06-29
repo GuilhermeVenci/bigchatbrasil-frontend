@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { UserTypes } from './types/user';
+import axios from 'axios';
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
@@ -40,16 +41,18 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAdminPath) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/me`,
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    if (response.ok) {
-      const user: UserTypes = await response.json();
+    if (response.status === 200) {
+      const user: UserTypes = response.data;
       userRole = user ? user.role : '';
     }
 

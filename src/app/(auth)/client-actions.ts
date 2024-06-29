@@ -1,12 +1,16 @@
-const logoutClient = async () => {
-  const response = await fetch('/logout', {
-    method: 'POST',
-  });
+import axios from 'axios';
 
-  if (response.ok) {
-    window.location.href = '/login';
-  } else {
-    console.error('Failed to logout');
+const logoutClient = async () => {
+  try {
+    const response = await axios.post('/logout');
+
+    if (response.status === 200) {
+      window.location.href = '/login';
+    } else {
+      console.error('Failed to logout');
+    }
+  } catch (error) {
+    console.error('Error logout:', error);
   }
 };
 
