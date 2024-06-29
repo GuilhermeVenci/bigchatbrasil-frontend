@@ -29,7 +29,7 @@ const MessageList = () => {
         role="list"
         className="w-full flex max-lg:flex-col-reverse lg:flex-wrap-reverse gap-4"
       >
-        {messages.length > 0 ? (
+        {!!messages && messages.length > 0 ? (
           messages.map((message: any) => (
             <li
               key={message?.id}

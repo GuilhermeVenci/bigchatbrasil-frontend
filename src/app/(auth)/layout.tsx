@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             style={{ width: '100%', maxWidth: '70vw' }}
           />
         </div>
-        <div className="flex-1 flex items-center justify-center bg-white max-sm:rounded-t-xl max-sm:-mt-[3vh] max-sm:z-10 max-sm:shadow-2xl">
+        <div className="flex-1 flex items-center justify-center bg-white max-sm:rounded-t-xl max-sm:-mt-[3vh] z-10 max-sm:shadow-2xl">
           <div className="container px-4 pb-6 max-w-sm lg:max-w-none">
             <div className="flex flex-col items-center max-sm:-mt-[12vh]">
               <Image

@@ -7,12 +7,7 @@ import MessagesPage from './page';
 import apiRequest from '@/utils/api';
 import LoadingMessages from './loading';
 import { ClientProvider } from '@/context/client-context';
-
-type ClientType = {
-  id: number;
-  name: string;
-  plan: string;
-};
+import { ClientType } from '@/types/client';
 
 const MessagesLayout = () => {
   const { user } = useUser();
@@ -24,7 +19,7 @@ const MessagesLayout = () => {
       if (user) {
         try {
           const clientResponse: any = await apiRequest(
-            '/clients/user/' + user?.id
+            '/clients/native/user/' + user?.id
           );
           console.log(clientResponse);
           if (clientResponse && clientResponse.id) {
@@ -33,7 +28,6 @@ const MessagesLayout = () => {
             setClient(null);
           }
         } catch (error) {
-          console.error('Falha no carregamento:', error);
           setClient(null);
         } finally {
           setLoading(false);
@@ -54,8 +48,8 @@ const MessagesLayout = () => {
         <div className="p-6 sm:p-12">
           {loading ? (
             <LoadingMessages />
-          ) : client !== null ? (
-            <MessagesPage clientId={client.id} />
+          ) : client ? (
+            <MessagesPage client={client} />
           ) : (
             <ClientForm onClientCreated={handleClientCreated} />
           )}

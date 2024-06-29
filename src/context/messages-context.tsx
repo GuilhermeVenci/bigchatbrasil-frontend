@@ -5,16 +5,12 @@ import {
   useState,
   ReactNode,
   useEffect,
+  useCallback,
 } from 'react';
 import apiRequest from '@/utils/api';
 import { useUser } from '@/context/user-context';
 import { useClient } from './client-context';
-
-type Message = {
-  id: number;
-  text: string;
-  isWhatsApp: boolean;
-};
+import { Message } from '@/types/messages';
 
 type MessagesContextType = {
   messages: Message[];
@@ -31,7 +27,7 @@ export const MessagesProvider = ({ children }: { children: ReactNode }) => {
   const { client, getClientData } = useClient();
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const getMessages = async () => {
+  const getMessages = useCallback(async () => {
     if (user) {
       try {
         const response = await apiRequest(`/messages/user/${user.id}`);
@@ -40,7 +36,7 @@ export const MessagesProvider = ({ children }: { children: ReactNode }) => {
         console.log(error);
       }
     }
-  };
+  }, [user]);
 
   const sendMessage = async (values: any) => {
     try {
@@ -54,7 +50,7 @@ export const MessagesProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     getMessages();
-  }, [user]);
+  }, [user, getMessages]);
 
   return (
     <MessagesContext.Provider value={{ messages, getMessages, sendMessage }}>

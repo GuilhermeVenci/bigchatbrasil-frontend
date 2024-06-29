@@ -1,45 +1,50 @@
+import axios, { AxiosRequestConfig } from 'axios';
+
 const apiRequest = async (
   url: string,
   method: string = 'GET',
   body: any = null
 ) => {
-  const options: RequestInit = {
+  const config: AxiosRequestConfig = {
+    url: `${process.env.NEXT_PUBLIC_API_URL}${url}`,
     method,
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
+    withCredentials: true,
+    data: body ? JSON.stringify(body) : undefined,
   };
 
-  if (body) {
-    options.body = JSON.stringify(body);
-  }
-
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}${url}`,
-    options
-  );
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    if (response.status === 401) {
-      console.log('Unautorized');
-    } else if (response.status === 500) {
-      console.log('Not found');
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 401) {
+          console.log('Unauthorized');
+        } else if (status === 404) {
+          console.log('Not found');
+          return null;
+        } else if (status === 500) {
+          console.log('Database not found');
+        } else {
+          console.log(`API request failed with status ${status}: ${data}`);
+        }
+        throw new Error(`API request failed with status ${status}: ${data}`);
+      } else if (error.request) {
+        console.log('No response received');
+        throw new Error('No response received');
+      } else {
+        console.log('Error setting up request:', error.message);
+        throw new Error(`Error setting up request: ${error.message}`);
+      }
     } else {
-      console.error(
-        `API request failed with status ${response.status}: ${errorText}`
-      );
-      console.error(`API request failed with status ${response.status}`);
+      console.log('Unexpected error:', error);
+      throw new Error('Unexpected error occurred');
     }
   }
-
-  const responseText = await response.text();
-  if (!responseText) {
-    return null;
-  }
-
-  return JSON.parse(responseText);
 };
 
 export default apiRequest;

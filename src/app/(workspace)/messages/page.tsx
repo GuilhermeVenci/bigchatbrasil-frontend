@@ -1,7 +1,7 @@
 'use client';
 import MessageList from '@/components/custom/message-list';
 import SendMessageForm from '@/components/forms/send-message-form';
-import { useClient } from '@/context/client-context';
+import { ClientType } from '@/types/client';
 
 const formatCurrency = (value: number, locale = 'pt-BR', currency = 'BRL') => {
   return new Intl.NumberFormat(locale, {
@@ -10,13 +10,12 @@ const formatCurrency = (value: number, locale = 'pt-BR', currency = 'BRL') => {
   }).format(value);
 };
 
-const MessagesPage = ({ clientId }: { clientId: number }) => {
-  const { client } = useClient();
+const MessagesPage = ({ client }: { client: ClientType }) => {
   const planPre = client?.plan === 'PREPAID';
   const balance = client
     ? planPre
       ? client.credits ?? 0
-      : client.currentConsumption ?? 0
+      : (client.currentConsumption || client.current_consumption) ?? 0
     : 0;
 
   return (
@@ -34,7 +33,7 @@ const MessagesPage = ({ clientId }: { clientId: number }) => {
             {planPre ? 'Pré-pago' : 'Pós-pago'}
           </span>
         </div>
-        <SendMessageForm clientId={clientId} />
+        <SendMessageForm clientId={client.id} />
       </div>
       <MessageList />
     </div>
