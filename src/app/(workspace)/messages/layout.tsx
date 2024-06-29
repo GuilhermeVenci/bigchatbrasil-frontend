@@ -21,6 +21,7 @@ const MessagesLayout = () => {
           const clientResponse: any = await apiRequest(
             '/clients/native/user/' + user?.id
           );
+          console.log(clientResponse);
           if (clientResponse && clientResponse.id) {
             setClient(clientResponse);
           } else {
@@ -31,8 +32,6 @@ const MessagesLayout = () => {
         } finally {
           setLoading(false);
         }
-      } else {
-        setLoading(false);
       }
     };
 
