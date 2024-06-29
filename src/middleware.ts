@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { UserTypes } from './models/user';
+import { UserTypes } from './types/user';
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
